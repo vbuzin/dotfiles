@@ -1,0 +1,27 @@
+#
+# Executes commands at the start of an interactive session.
+#
+
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+
+# Source Prezto.
+if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
+  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+fi
+
+### aliases
+alias screen="screen -D -R"
+alias ls='gls --group-directories-first --color=auto'
+### aliases
+
+### aliasing Emacs
+function edit()
+{
+    if [[ $# -gt 1 ]]; then
+        /usr/local/bin/emacsclient $*
+    else
+        /usr/local/bin/emacsclient -n -a=emacs $*  >/dev/null 2>&1 &
+    fi
+}
+### end Emacs

@@ -1,0 +1,9 @@
+tap "homebrew/bundle"
+tap "homebrew/cask"
+tap "homebrew/cask-fonts"
+
+brew "aspell"
+brew "coreutils"
+brew "multimarkdown"
+
+cask "emacs"
