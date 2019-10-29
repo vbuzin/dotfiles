@@ -207,6 +207,11 @@
     (setq-default helm-mode-fuzzy-match t)
     (setq-default helm-recentf-fuzzy-match t))
 
+  (use-package helm-org-rifle
+    :after org
+    :bind (:map org-mode-map
+                ("C-c or" . helm-org-rifle)))
+
   :bind
   (("C-h a"   . helm-apropos)
    ("C-x C-b" . helm-buffers-list)
