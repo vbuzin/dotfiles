@@ -29,16 +29,6 @@
     (with-eval-after-load 'company
       (add-to-list 'company-backends 'company-anaconda))))
 
-(use-package ensime
-  :disabled
-  :pin melpa-stable
-  :config
-  (setq ensime-mode-key-prefix (kbd "C-c e"))
-  (setq ensime-startup-snapshot-notification nil)
-  (setq ensime-startup-notification nil)
-  (setq ensime-search-interface 'helm)
-  (setq ensime-completion-style 'company))
-
 ;;;; Go
 (use-package go-mode
   :disabled
