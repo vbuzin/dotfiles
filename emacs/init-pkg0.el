@@ -50,16 +50,6 @@
   :bind (("M-%"   . anzu-query-replace)
          ("C-M-%" . anzu-query-replace-regexp)))
 
-(use-package berrys-theme
-  :ensure nil
-  :init
-  (add-to-list 'custom-theme-load-path "~/Projects/berrys-theme")
-  (load-theme 'berrys t)
-
-  :config
-  (setq-default cursor-type '(bar . 2))
-  (setq-default line-spacing 2))
-
 (use-package bm
   :bind
   (("C-c bb" . bm-toggle)
@@ -111,6 +101,28 @@
   (define-key company-active-map [tab] nil)
   :hook
   (after-init . global-company-mode))
+
+(use-package cycle-themes
+  :init
+  (setq-default cursor-type '(bar . 3))
+  (setq-default line-spacing 2)
+
+  (use-package berrys-theme
+    :ensure nil
+    :init
+    (add-to-list 'custom-theme-load-path "~/Projects/berrys-theme")
+    (load-theme 'berrys t t))
+
+  (use-package nord-theme
+    :init
+    (setq nord-region-highlight 'snowstorm)
+    (load-theme 'nord t))
+
+  (setq cycle-themes-theme-list '(berrys nord))
+  :bind
+  ("C-c tt" . cycle-themes)
+  :config
+  (cycle-themes-mode))
 
 (use-package dash-at-point
   :bind (("C-c d" . dash-at-point)
