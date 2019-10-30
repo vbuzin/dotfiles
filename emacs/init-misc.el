@@ -57,17 +57,19 @@
 (fset 'yes-or-no-p 'y-or-n-p)
 
 ;; some useful modes
-(delete-selection-mode t)            ;; delete the selection with a keypress
-(electric-indent-mode t)             ;; automatically reindent as you type
-(electric-pair-mode t)               ;; automatic parens pairing
-(electric-quote-mode t)              ;; on-the-fly requoting
-(fringe-mode nil)                    ;; enable fringes
-(global-font-lock-mode t)            ;; font-lock mode in all buffers.
-(global-hl-line-mode t)              ;; line highlighting
-(global-prettify-symbols-mode t)     ;; replace lambda with λ
-(save-place-mode t)                  ;; open a file at the last place visited
-(show-paren-mode t)                  ;; visualise matching parens
-(which-function-mode t)              ;; displays current function name in the mode line
+(delete-selection-mode t)        ;; delete the selection with a keypress
+(electric-indent-mode t)         ;; automatically reindent as you type
+(electric-pair-mode t)           ;; automatic parens pairing
+(electric-quote-mode t)          ;; on-the-fly requoting
+(fringe-mode nil)                ;; enable fringes
+(global-font-lock-mode t)        ;; font-lock mode in all buffers.
+(global-hl-line-mode t)          ;; line highlighting
+(global-prettify-symbols-mode t) ;; replace lambda with λ
+(save-place-mode t)              ;; open a file at the last place visited
+(show-paren-mode t)              ;; visualise matching parens
+(which-function-mode t)          ;; displays current function name in the mode line
+(winner-mode t)                  ;; record/restor window configuration
+
 
 ;; enable line numbers for prog modes
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)

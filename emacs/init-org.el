@@ -4,11 +4,6 @@
 (global-set-key (kbd "\C-c oa") 'org-agenda)
 (global-set-key (kbd "\C-c oc") 'org-capture)
 (global-set-key (kbd "\C-c ol") 'org-store-link)
-(global-set-key (kbd "\C-c ot") 'org-tags-view)
-
-;; datetree
-(setq-default org-display-custom-times t)
-(setq org-time-stamp-custom-formats '("<%a %b %e %Y>" . "<%a %b %e %Y %H:%M>"))
 
 ;; locations
 (setq org-directory (expand-file-name "~/Documents/Org/"))
@@ -16,8 +11,8 @@
 
 (setq diary-file             (concat org-directory "/diary"))
 (setq org-default-notes-file (concat org-directory "/inbox.org"))
-(setq org-attach-directory   (concat org-directory "/attachments/"))
-(setq org-archive-location   (concat org-directory "/archive/%s_archive::"))
+(setq org-attach-directory   (concat org-directory "/data/"))
+(setq org-archive-location   (concat org-directory "/arch/%s_arch::"))
 
 (set-register ?o `(file . ,org-directory))
 ;; ===
@@ -32,12 +27,20 @@
 ;; ===
 
 (with-eval-after-load 'org
-  ;; Encrypt headlines
+
+  ;; save clock history across Emacs sessions
+  (setq org-clock-persist 'history)
+  (org-clock-persistence-insinuate)
+
+  ;; keybindings
+  (define-key org-mode-map (kbd "\C-c op") 'org-property-action)
+
+  ;; encrypt headlines
   (require 'org-crypt)
   (org-crypt-use-before-save-magic)
   (setq org-tags-exclude-from-inheritance '("crypt"))
 
-  ;; for inline images
+  ;; inline images
   (require 'org-attach)
   (setq org-link-abbrev-alist '(("att" . org-attach-expand-link)))
 
@@ -56,9 +59,10 @@
 (setq org-agenda-skip-deadline-if-done t)
 (setq org-agenda-skip-scheduled-if-done t)
 (setq org-agenda-skip-timestamp-if-done t)
-(setq org-agenda-span 'fortnight)
+(setq org-agenda-span 'week)
 (setq org-agenda-window-setup 'only-window)
 (setq org-catch-invisible-edits 'show-and-error)
+(setq org-clock-idle-time 5)
 (setq org-deadline-warning-days 2)
 (setq org-display-inline-images nil)
 (setq org-ellipsis " ⤵")
@@ -66,7 +70,7 @@
 (setq org-enforce-todo-dependencies t)
 (setq org-export-with-section-numbers nil)
 (setq org-fontify-done-headline t)
-(setq org-goto-auto-isearch nil)
+(setq org-goto-auto-isearch t)
 (setq org-hide-emphasis-markers nil)
 (setq org-image-actual-width nil)
 (setq org-indent-mode t)
@@ -78,18 +82,28 @@
 (setq org-show-hierarchy-above t)
 (setq org-special-ctrl-a/e t)
 (setq org-startup-align-all-tables t)
-(setq org-startup-folded 'content)
+(setq org-startup-folded 'overview)
 (setq org-startup-indented t)
 (setq org-tags-column -90)
 
 (setq org-tag-alist
-      '((:startgroup . "location")
-        ("@office" . ?o) ("@home" . ?h)
+      '((:startgroup . "activity")
+        ("routine"   . ?a)
+        ("reading"   . ?r)
+        ("surfing"   . ?s)
+        ("writing"   . ?w)
         (:endgroup)
         (:startgroup . "category")
-        ("personal" . ?p) ("work" . ?w)
+        ("pers"      . ?p)
+        ("work"      . ?j)
         (:endgroup)
-        ("crypt" . ?c)))
+        (:startgroup . "location")
+        ("@office"   . ?o)
+        ("@home"     . ?h)
+        (:endgroup)
+        ("explore"   . ?e)
+        ("crypt"     . ?c)
+        ("idea"      . ?i)))
 
 (setq org-link-frame-setup '((vm      . vm-visit-folder-other-frame)
                              (vm-imap . vm-visit-imap-folder-other-frame)
@@ -104,9 +118,9 @@
       "%40ITEM(Task) %TAGS(Context) %17EFFORT(Time){:} %CLOCKSUM(Clocksum)")
 
 (setq org-todo-keywords
-      '((sequence "TODO(t)" "WIP(p!)" "BLOCKED(b@/!)"
-                  "SOMEDAY(.)" "|" "DONE(d!)" "CANCELLED(c@)")
-        (sequence "FOLLOW-UP(f)" "|" "DONE(d!)")))
+      '((sequence "TODO(t)" "WIP(w!)" "BLOCKED(b@/!)" "SOMEDAY(f)" "|" "DONE(d@/!)")
+        (sequence "FOLLOW-UP(f)" "|" "COMPLETE(c@/!)")
+        (sequence "|" "CANCELED(a@/!)")))
 
 (add-hook 'org-mode-hook
           '(lambda ()
@@ -132,7 +146,7 @@
 
         ("m" "Meeting" entry
          (file+olp+datetree ,(concat org-directory "/meetings.org"))
-         "* %^T %^{Subject} %^{Participants}p\n
+         "* %^T %^{Subject} %^{With}p\n
 ** Goals\n\n** Agenda\n\n** Notes\n\n " :tree-type week)
 
         ("j" "Reflective Journal" entry
@@ -140,7 +154,7 @@
          "**** %U%?%a \n" :tree-type week)
 
         ("j" "Strategic Journal" entry
-         (file+olp+datetree ,(concat org-directory "/stretegic.org.gpg"))
+         (file+olp+datetree ,(concat org-directory "/strategic.org.gpg"))
          "**** %U%?%a \n" :tree-type week)
 
         ))
