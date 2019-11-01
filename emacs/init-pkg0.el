@@ -179,6 +179,11 @@
   :config
   (global-fringe-current-line-mode t))
 
+(use-package gnuplot
+  ;; who would’ve thought that you’ll need this
+  ;; 5 years old package for `org-plot' to work
+  :after org)
+
 (use-package helm
   :hook (after-init . helm-mode)
   :diminish
