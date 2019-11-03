@@ -245,9 +245,7 @@
 
 (use-package indent-guide
   :diminish
-  :defer 1
-  :config
-  (indent-guide-global-mode))
+  :hook (prog-mode . indent-guide-mode))
 
 (use-package magit
   :config
