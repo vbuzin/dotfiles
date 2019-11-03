@@ -118,9 +118,8 @@
       "%40ITEM(Task) %TAGS(Context) %17EFFORT(Time){:} %CLOCKSUM(Clocksum)")
 
 (setq org-todo-keywords
-      '((sequence "TODO(t)" "WIP(w!)" "BLOCKED(b@/!)" "SOMEDAY(f)" "|" "DONE(d@/!)")
-        (sequence "FOLLOW-UP(f)" "|" "COMPLETE(c@/!)")
-        (sequence "|" "CANCELED(a@/!)")))
+      '((sequence "TODO(t)" "NEXT(n)" "WIP(w!)" "|" "DONE(d@/!)")
+        (sequence "WAIT(w@/!)" "HOLD(b@/!)" "SOMEDAY(f)" "|" "CANCELED(a@/!)")))
 
 (add-hook 'org-mode-hook
           '(lambda ()
@@ -138,10 +137,12 @@
         (org-agenda-files :maxlevel . 3)))
 
 (setq org-capture-templates
-      `(("t" "Todo" entry (file+headline org-default-notes-file "Tasks")
+      `(("t" "Todo" entry
+         (file+headline org-default-notes-file "Tasks")
          "* TODO %^{Title} %^G\n%?")
 
-        ("n" "Note" entry (file+headline org-default-notes-file "Notes")
+        ("n" "Note" entry
+         (file+headline org-default-notes-file "Notes")
          "* %^{Title} \n:LOGBOOK: \n- Added: %U \n:END:\n%?")
 
         ("m" "Meeting" entry

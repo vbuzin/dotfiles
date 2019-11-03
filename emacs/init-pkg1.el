@@ -140,6 +140,9 @@
   :config
   (setq markdown-command "multimarkdown"))
 
+(use-package package-lint
+  :commands package-lint-current-buffer)
+
 ;; Rust
 (use-package rust-mode
   :disabled
