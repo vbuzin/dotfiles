@@ -110,6 +110,32 @@ $(STACK_TARGET_DIR):
 	@echo "Creating directory $(STACK_TARGET_DIR)"
 	@mkdir -p $@
 
+# Mu for brave and true
+# ==============================================================================
+MU_SOURCE_DIR := $(abspath ./mu)
+
+MAIL_TARGET_DIR1 := $(abspath $(HOME)/Mail/v8v.buzin@gmail.com)
+MAIL_TARGET_DIR2 := $(abspath $(HOME)/Mail/v.buzin@icloud.com)
+
+_mu: _emacs | $(MAIL_TARGET_DIR1) $(MAIL_TARGET_DIR2)
+	@echo $(call message,"Installing isync and mu")
+	@brew install mu isync
+
+	ln -sf $(MU_SOURCE_DIR)/mbsyncrc $(addsuffix /.mbsyncrc,$(HOME))
+
+	@echo "Synchronising mailbox(es) and indexing via mu"
+	@mbsync --all --verbose
+	@mu index --maildir=$(MAIL_TARGET_DIR1)
+	@mu index --maildir=$(MAIL_TARGET_DIR2)
+
+$(MAIL_TARGET_DIR1):
+	@echo "Creating directory $(MAIL_TARGET_DIR1)"
+	@mkdir -p $@
+
+$(MAIL_TARGET_DIR2):
+	@echo "Creating directory $(MAIL_TARGET_DIR2)"
+	@mkdir -p $@
+
 # Rust
 # ==============================================================================
 _rust: _brew

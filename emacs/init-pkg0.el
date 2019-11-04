@@ -264,6 +264,86 @@
   :bind (("M-S-<up>"   . move-text-up)
          ("M-S-<down>" . move-text-down)))
 
+(use-package mu4e
+  :ensure nil
+  :commands mu4e
+  :load-path "/usr/local/share/emacs/site-lisp/mu/mu4e/"
+  :config
+  (setq shr-color-visible-luminance-min 80)
+  (setq mu4e-headers-date-format "%d/%m/%y")
+  (setq mu4e-headers-time-format "%H:%M")
+
+  (setq mu4e-view-use-gnus t)
+  (setq mu4e-completing-read-function 'completing-read)
+
+  ;; getting emails
+  (setq mail-user-agent 'mu4e-user-agent)
+  (setq mu4e-maildir "~/Mail")
+  (setq mu4e-get-mail-command "mbsync --all"
+        mu4e-update-interval 600)
+
+  ;; sending and composing mails
+  (setq send-mail-function 'smtpmail-send-it
+        smtpmail-stream-type 'ssl
+        starttls-use-gnutls t
+        message-send-mail-function 'smtpmail-send-it
+        mu4e-sent-messages-behavior 'delete)
+  (setq message-kill-buffer-on-exit t) ;; don't keep message buffers around
+  (setq mu4e-compose-format-flowed t)
+  (setq mu4e-compose-signature (concat
+                                "Slava Buzin\n"
+                                "PGP: F112 055E 8237 34F6 DA3F  384B CB3F 22B0 44B9 3AE9\n"))
+
+  ;; contexts
+  (setq mu4e-context-policy 'pick-first)
+  (setq mu4e-compose-context-policy 'ask)
+
+  (require 'smtpmail)
+  ;; contexts
+  (let ((gmail  "v8v.buzin@gmail.com")
+        (icloud "v.buzin@icloud.com"))
+    (setq mu4e-contexts
+          `(,(make-mu4e-context
+              :name (concat "1_" gmail)
+              :enter-func `(lambda () (mu4e-message ,(concat "Entering " gmail " context")))
+              :leave-func `(lambda () (mu4e-message ,(concat "Leaving " gmail " context")))
+              :match-func `(lambda (msg)
+                             (when msg
+                               (mu4e-message-contact-field-matches msg :to ,gmail)))
+              :vars `( (user-mail-address             . ,gmail)
+                       (mail-reply-to                 . ,gmail)
+                       (mu4e-trash-folder             . ,(concat "/" gmail "/Trash"))
+                       (mu4e-refile-folder            . ,(concat "/" gmail "/Archive"))
+                       (mu4e-sent-folder              . ,(concat "/" gmail "/Sent"))
+                       (mu4e-drafts-folder            . ,(concat "/" gmail "/Drafts"))
+                       (smtpmail-smtp-server          . "smtp.gmail.com")
+                       (smtpmail-smtp-service         . 465)
+                       (smtpmail-smtp-user            . ,gmail) ))
+
+            ,(make-mu4e-context
+              :name (concat "2_" icloud)
+              :enter-func `(lambda () (mu4e-message ,(concat "Entering " icloud " context")))
+              :leave-func `(lambda () (mu4e-message ,(concat "Leaving " icloud " context")))
+              :match-func `(lambda (msg)
+                            (when msg
+                              (mu4e-message-contact-field-matches msg :to ,icloud)))
+              :vars `( (user-mail-address       . ,icloud)
+                       ( mail-reply-to          . ,icloud )
+                       ( mu4e-trash-folder      . ,(concat "/" icloud "/Trash") )
+                       ( mu4e-refile-folder     . ,(concat "/" icloud "/Archive") )
+                       ( mu4e-sent-folder       . ,(concat "/" icloud "/Sent") )
+                       ( mu4e-drafts-folder     . ,(concat "/" icloud "/Drafts") )
+                       ( smtpmail-smtp-server   . "smtp.mail.me.com" )
+                       ( smtpmail-smtp-service  . 465 )
+                       ( smtpmail-smtp-user     . "v.buzin" )) ))))
+
+  (setq mu4e-user-mail-address-list
+        (delq nil
+              (mapcar (lambda (context)
+                        (when (mu4e-context-vars context)
+                          (cdr (assq 'user-mail-address (mu4e-context-vars context)))))
+                      mu4e-contexts))))
+
 (use-package multiple-cursors
   :bind (("C->"   . mc/mark-next-like-this)
          ("C-<"   . mc/mark-previous-like-this)
