@@ -287,13 +287,16 @@
   (setq send-mail-function 'smtpmail-send-it
         smtpmail-stream-type 'ssl
         starttls-use-gnutls t
-        message-send-mail-function 'smtpmail-send-it
-        mu4e-sent-messages-behavior 'delete)
+        message-send-mail-function 'smtpmail-send-it)
   (setq message-kill-buffer-on-exit t) ;; don't keep message buffers around
   (setq mu4e-compose-format-flowed t)
   (setq mu4e-compose-signature (concat
                                 "Slava Buzin\n"
                                 "PGP: F112 055E 8237 34F6 DA3F  384B CB3F 22B0 44B9 3AE9\n"))
+  (setq mu4e-sent-messages-behavior
+        (lambda ()
+          (if (string-suffix-p "gmail.com" (message-sendmail-envelope-from))
+              'delete 'sent)))
 
   ;; contexts
   (setq mu4e-context-policy 'pick-first)
@@ -334,8 +337,9 @@
                        ( mu4e-refile-folder     . ,(concat "/" icloud "/Archive") )
                        ( mu4e-sent-folder       . ,(concat "/" icloud "/Sent") )
                        ( mu4e-drafts-folder     . ,(concat "/" icloud "/Drafts") )
+                       ( smtpmail-stream-type   . starttls )
                        ( smtpmail-smtp-server   . "smtp.mail.me.com" )
-                       ( smtpmail-smtp-service  . 465 )
+                       ( smtpmail-smtp-service  . 587 )
                        ( smtpmail-smtp-user     . "v.buzin" )) ))))
 
   (setq mu4e-user-mail-address-list
