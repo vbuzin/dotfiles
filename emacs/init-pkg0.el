@@ -265,6 +265,7 @@
          ("M-S-<down>" . move-text-down)))
 
 (use-package mu4e
+  :if (executable-find "mu")
   :ensure nil
   :commands mu4e
   :load-path "/usr/local/share/emacs/site-lisp/mu/mu4e/"
