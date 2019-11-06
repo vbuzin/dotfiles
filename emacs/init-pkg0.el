@@ -70,9 +70,6 @@
 
   (setq-default bm-buffer-persistence nil)
 
-  (use-package helm-bm
-    :bind ("C-c bs" . helm-bm))
-
   :hook
   ((kill-buffer  . bm-buffer-save)
    (kill-emacs   . (lambda nil (bm-buffer-save-all) (bm-repository-save)))
@@ -115,12 +112,14 @@
 
   (use-package nord-theme
     :init
-    (setq nord-region-highlight 'snowstorm)
+    (setq nord-region-thighlight 'snowstorm)
     (load-theme 'nord t))
-
   (setq cycle-themes-theme-list '(berrys nord))
-  :bind
-  ("C-c tt" . cycle-themes)
+
+  :bind ((:map cycle-themes-mode-map
+               ("C-c C-t" . nil))
+         (:map global-map
+               ("C-c tt"  . cycle-themes)))
   :config
   (cycle-themes-mode))
 
@@ -202,8 +201,12 @@
   (add-to-list 'helm-completing-read-handlers-alist '(org-set-property))
   (add-to-list 'helm-completing-read-handlers-alist '(org-set-tags))
 
+  (use-package helm-bm
+    :after bm
+    :bind ("C-c bs" . helm-bm))
+
   (use-package helm-c-yasnippet
-    :if (package-installed-p 'yasnippet)
+    :after yasnippet
     :config
     (setq helm-yas-space-match-any-greedy t)
     :bind
@@ -228,6 +231,12 @@
     :after org
     :bind (:map org-mode-map
                 ("C-c or" . helm-org-rifle)))
+
+  (use-package helm-projectile
+    :after projectile
+    :config
+    (setq projectile-completion-system 'helm)
+    (helm-projectile-on))
 
   :bind
   (("C-h a"   . helm-apropos)
@@ -435,12 +444,6 @@
                     "*.tar.gz"
                     "*.tgz"
                     "*.zip")))
-
-  (use-package helm-projectile
-    :init
-    (helm-projectile-on)
-    :config
-    (setq projectile-completion-system 'helm))
 
   :bind-keymap
   ("C-c p" . projectile-command-map))
