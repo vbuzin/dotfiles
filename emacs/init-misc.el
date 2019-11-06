@@ -1,12 +1,11 @@
+;; -*- lexical-binding: t; -*-
+
 ;;; Misc stuff
 ;; =============================================================================
 
-;; Bury the `*scratch*' buffer, never kill it:
-(defadvice kill-buffer (around kill-buffer-around-advice activate)
-  (let ((buffer-to-kill (ad-get-arg 0)))
-    (if (equal buffer-to-kill "*scratch*")
-        (bury-buffer)
-      ad-do-it)))
+;; Protect the `*scratch*' and `*Messages*’ buffers.
+(with-current-buffer "*scratch*" (emacs-lock-mode 'kill))
+(with-current-buffer "*Messages*" (emacs-lock-mode 'kill))
 
 (when (executable-find "gls")
   (setq insert-directory-program "gls")
