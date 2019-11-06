@@ -118,8 +118,11 @@
       "%40ITEM(Task) %TAGS(Context) %17EFFORT(Time){:} %CLOCKSUM(Clocksum)")
 
 (setq org-todo-keywords
-      '((sequence "TODO(t)" "NEXT(n)" "WIP(w!)" "|" "DONE(d@/!)")
-        (sequence "WAIT(w@/!)" "HOLD(b@/!)" "SOMEDAY(f)" "|" "CANCELED(a@/!)")))
+      '((sequence "TODO(t)" "NEXT(n)" "WIP(w!)" "|")
+        (sequence "WAIT(w@/!)" "HOLD(b@/!)" "SOMEDAY(s)" "|")
+        (sequence "FOLLOW-UP(f)" "|")
+        (sequence "|" "DONE(d@/!)")
+        (sequence "|" "CANCELED(a@/!)")))
 
 (add-hook 'org-mode-hook
           '(lambda ()
@@ -137,18 +140,22 @@
         (org-agenda-files :maxlevel . 3)))
 
 (setq org-capture-templates
-      `(("t" "Todo" entry
+      `(("e" "Mu4e follow-up" entry
+         (file+headline org-default-notes-file "Follow-up")
+         "* FOLLOW-UP [#A] %^{Title} %^G
+:PROPERTIES:\n:CATEGORY: Email\n:With: %:fromname\n:END:\n%a\n%?")
+
+        ("t" "Todo" entry
          (file+headline org-default-notes-file "Tasks")
          "* TODO %^{Title} %^G\n%?")
 
         ("n" "Note" entry
          (file+headline org-default-notes-file "Notes")
-         "* %^{Title} \n:LOGBOOK: \n- Added: %U \n:END:\n%?")
+         "* %^{Title}\n:LOGBOOK: \n- Added: %U \n:END:\n%?")
 
         ("m" "Meeting" entry
          (file+olp+datetree ,(concat org-directory "/meetings.org"))
-         "* %^T %^{Subject} %^{With}p\n
-** Goals\n\n** Agenda\n\n** Notes\n\n " :tree-type week)
+         "* %^T %^{Subject} %^{With}p\n** Agenda\n\n** Notes\n\n " :tree-type week)
 
         ("j" "Reflective Journal" entry
          (file+olp+datetree ,(concat org-directory "/dailylog.org.gpg"))
@@ -159,6 +166,10 @@
          "**** %U%?%a \n" :tree-type week)
 
         ))
+
+(setq org-capture-templates-contexts
+      '(("f" ((in-mode . "mu4e-headers-mode")
+              (in-mode . "mu4e-view-mode"))) ))
 
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars)
