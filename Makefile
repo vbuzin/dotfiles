@@ -24,7 +24,8 @@ _apps: _brew | $(GPG_TARGET_DIR) $(HTOP_TARGET_DIR)
 	@brew bundle --file=$(APPS_SOURCE_DIR)/Brewfile
 
 	@echo $(call message,"Setting up configuration files for GnuPG")
-	ln -sf $(GPG_SOURCE_DIR)/gpg.conf $(addsuffix /,$(GPG_TARGET_DIR))
+	ln -sf $(GPG_SOURCE_DIR)/gpg.conf       $(addsuffix /,$(GPG_TARGET_DIR))
+	ln -sf $(GPG_SOURCE_DIR)/gpg-agent.conf $(addsuffix /,$(GPG_TARGET_DIR))
 
 	@echo $(call message,"Setting up configuration files for htop")
 	ln -sf $(HTOP_SOURCE_DIR)/htoprc $(addsuffix /,$(HTOP_TARGET_DIR))

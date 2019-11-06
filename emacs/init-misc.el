@@ -34,7 +34,6 @@
 (setq confirm-kill-emacs 'y-or-n-p)
 (setq display-time-default-load-average nil)
 (setq display-time-format " %I:%M%p ")
-(setq epa-pinentry-mode 'loopback)
 (setq kill-do-not-save-duplicates t)
 (setq line-move-visual t)
 (setq make-backup-files nil)

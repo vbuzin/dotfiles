@@ -267,21 +267,39 @@
 (use-package mu4e
   :if (executable-find "mu")
   :ensure nil
-  :commands mu4e
+  :bind
+  (("C-c mu" . mu4e))
   :load-path "/usr/local/share/emacs/site-lisp/mu/mu4e/"
+  :bind ((:map mu4e-view-mode-map
+               ("<tab>"     . shr-next-link)
+               ("<S-tab>" . shr-previous-link))
+         ([remap gnus-article-describe-bindings] . helm-descbinds))
   :config
-  (setq shr-color-visible-luminance-min 80)
+  (use-package org-mu4e
+    :demand
+    :ensure nil
+    :config
+    (setq org-mu4e-link-query-in-headers-mode nil))
+
+  ;; getting and reading emails
+  (setq gnus-inhibit-images t)
+  (setq gnus-treat-display-smileys nil)
+  (setq mail-user-agent 'mu4e-user-agent)
+  (setq mu4e-attachment-dir  "~/Downloads")
+  (setq mu4e-completing-read-function 'completing-read)
+  (setq mu4e-get-mail-command (format "INSIDE_EMACS=%s mbsync -a" emacs-version))
   (setq mu4e-headers-date-format "%d/%m/%y")
   (setq mu4e-headers-time-format "%H:%M")
-
-  (setq mu4e-view-use-gnus t)
-  (setq mu4e-completing-read-function 'completing-read)
-
-  ;; getting emails
-  (setq mail-user-agent 'mu4e-user-agent)
   (setq mu4e-maildir "~/Mail")
-  (setq mu4e-get-mail-command "mbsync --all"
-        mu4e-update-interval 600)
+  (setq mu4e-view-show-addresses t)
+  (setq mu4e-view-show-images nil)
+  (setq mu4e-view-use-gnus nil)
+  (setq shr-color-visible-luminance-min 60)
+
+  (setq mu4e-view-actions
+        '(("capture message"  . mu4e-action-capture-message)
+          ("show this thread" . mu4e-action-show-thread)
+          ("view in browser"  . mu4e-action-view-in-browser)))
 
   ;; sending and composing mails
   (setq send-mail-function 'smtpmail-send-it
@@ -370,6 +388,12 @@
          </section>")
   (setq org-re-reveal-transition "concave")
   (setq org-re-reveal-global-footer t))
+
+(use-package pinentry
+  :defer 1
+  :config
+  (setq epa-pinentry-mode 'ask)
+  (pinentry-start))
 
 (use-package projectile
   :defer 1
