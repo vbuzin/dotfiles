@@ -27,10 +27,13 @@
 
 ;;; Getting started
 ;; =============================================================================
-(setq user-mail-address "v8v.buzin@gmail.com")
-(setq user-full-name "Slava Buzin")
+(setq user-full-name (substring (shell-command-to-string "id -F") 0 -1))
 
 (message "Emacs is powering up... Be patient, Master %s!" user-full-name)
+
+(defun vb//greeting-message nil
+  (message "Emacs is ready to do thy bidding, Master %s!" user-full-name))
+(advice-add 'display-startup-echo-area-message :override #'vb//greeting-message)
 
 ;;; Emacs server
 (require 'server)
@@ -110,8 +113,6 @@
        "init-org"
        "init-keys"
        ))
-
-(message "Emacs is ready to do thy bidding, Master %s!" user-full-name)
 
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars)
