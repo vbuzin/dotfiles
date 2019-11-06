@@ -321,9 +321,23 @@
   (setq mu4e-compose-context-policy 'ask)
 
   (require 'smtpmail)
-  ;; contexts
+  ;; contexts and bookmarks
   (let ((gmail  "v8v.buzin@gmail.com")
         (icloud "v.buzin@icloud.com"))
+
+    ;; bookmarks
+    (add-to-list 'mu4e-bookmarks
+                 (make-mu4e-bookmark
+                  :name  "v8v.buzin@gmail.com - Inbox"
+                  :query (concat "maildir:/" gmail  "/Inbox")
+                  :key ?g))
+    (add-to-list 'mu4e-bookmarks
+                 (make-mu4e-bookmark
+                  :name  "v.buzin@icloud.com - Inbox"
+                  :query (concat "maildir:/" icloud  "/Inbox")
+                  :key ?i))
+
+    ;; contexts
     (setq mu4e-contexts
           `(,(make-mu4e-context
               :name (concat "1_" gmail)
