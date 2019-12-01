@@ -157,13 +157,13 @@
          (file+olp+datetree ,(concat org-directory "/meetings.org"))
          "* %^T %^{Subject} %^{With}p\n** Agenda\n\n** Notes\n\n " :tree-type week)
 
-        ("j" "Reflective Journal" entry
+        ("d" "Daily Log" entry
          (file+olp+datetree ,(concat org-directory "/dailylog.org.gpg"))
-         "**** %U%?%a \n" :tree-type week)
+         "**** %U %? \n" :tree-type week)
 
-        ("j" "Strategic Journal" entry
+        ("s" "Strategic Journal" entry
          (file+olp+datetree ,(concat org-directory "/strategic.org.gpg"))
-         "**** %U%?%a \n" :tree-type week)
+         "**** %U %? \n" :tree-type week)
 
         ))
 
