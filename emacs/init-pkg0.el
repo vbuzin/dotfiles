@@ -290,6 +290,8 @@
     :config
     (setq org-mu4e-link-query-in-headers-mode nil))
 
+  (require 'shr)
+
   ;; getting and reading emails
   (setq gnus-inhibit-images t)
   (setq gnus-treat-display-smileys nil)
