@@ -62,9 +62,9 @@
 (setenv "PATH"
         (concat
          (getenv "PATH")
-         ":~/bin"
-         ":~/.local/bin"
-         ":~/.cargo/bin"
+         (concat ":" (expand-file-name "~/bin"))
+         (concat ":" (expand-file-name "~/.local/bin"))
+         (concat ":" (expand-file-name "~/.cargo/bin"))
          ":/usr/local/bin"
          ":/usr/local/sbin"))
 
