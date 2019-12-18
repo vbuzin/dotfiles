@@ -412,7 +412,7 @@
 (use-package pinentry
   :defer 1
   :config
-  (setq epa-pinentry-mode 'ask)
+  (setq epa-pinentry-mode 'loopback)
   (pinentry-start))
 
 (use-package projectile
