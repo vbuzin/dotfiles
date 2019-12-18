@@ -112,7 +112,7 @@
 
   (use-package nord-theme
     :init
-    (setq nord-region-thighlight 'snowstorm)
+    (setq nord-region-highlight 'snowstorm)
     (load-theme 'nord t))
   (setq cycle-themes-theme-list '(berrys nord))
 
@@ -195,6 +195,9 @@
   (helm-mode t)
   (helm-adaptive-mode t)
 
+  (setq-default helm-mode-fuzzy-match t)
+  (setq-default helm-completion-in-region-fuzzy-match t)
+
   (setq helm-split-window-default-side 'same)
 
   (add-to-list 'helm-completing-read-handlers-alist '(org-capture))
@@ -218,23 +221,15 @@
   (use-package helm-descbinds
     :bind ("C-h b" . helm-descbinds))
 
-  (use-package helm-fuzzier
-    :hook (helm-mode . helm-fuzzier-mode)
-    :config
-    (setq-default helm-M-x-fuzzy-match t)
-    (setq-default helm-buffers-fuzzy-match t)
-    (setq-default helm-ff-fuzzy-matching t)
-    (setq-default helm-mode-fuzzy-match t)
-    (setq-default helm-recentf-fuzzy-match t))
-
   (use-package helm-org-rifle
-    :after org
-    :bind (:map org-mode-map
-                ("C-c or" . helm-org-rifle)))
+    :bind (("C-c or" . helm-org-rifle-agenda-files)
+           :map org-mode-map
+           ("C-c oo" . helm-org-rifle-current-buffer))
+    :config
+    (setq helm-org-rifle-show-path t))
 
   (use-package helm-projectile
-    :after projectile
-    :config
+    :init
     (setq projectile-completion-system 'helm)
     (helm-projectile-on))
 

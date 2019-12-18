@@ -9,7 +9,6 @@
 (setq org-directory (expand-file-name "~/Documents/Org/"))
 (setq org-agenda-files (list org-directory))
 
-(setq diary-file             (concat org-directory "/diary"))
 (setq org-default-notes-file (concat org-directory "/inbox.org"))
 (setq org-attach-directory   (concat org-directory "/data/"))
 (setq org-archive-location   (concat org-directory "/arch/%s_arch::"))
@@ -88,7 +87,6 @@
 
 (setq org-tag-alist
       '((:startgroup . "activity")
-        ("routine"   . ?a)
         ("reading"   . ?r)
         ("surfing"   . ?s)
         ("writing"   . ?w)
