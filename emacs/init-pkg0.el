@@ -222,6 +222,7 @@
     :bind ("C-h b" . helm-descbinds))
 
   (use-package helm-org-rifle
+    :after org
     :bind (("C-c or" . helm-org-rifle-agenda-files)
            :map org-mode-map
            ("C-c oo" . helm-org-rifle-current-buffer))

@@ -81,7 +81,7 @@
 
 ;; ignoring if font is not available
 (ignore-errors
-  (set-face-attribute 'default nil :font "SF Mono-14"))
+  (set-face-attribute 'default nil :font "JetBrains Mono-14"))
 
 ;;; Place all auto-saves and backups in the temp directory
 ;; =============================================================================
