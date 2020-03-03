@@ -108,12 +108,12 @@
     :ensure nil
     :init
     (add-to-list 'custom-theme-load-path "~/Projects/berrys-theme")
-    (load-theme 'berrys t t))
+    (load-theme 'berrys t))
 
   (use-package nord-theme
     :init
     (setq nord-region-highlight 'snowstorm)
-    (load-theme 'nord t))
+    (load-theme 'nord t t))
   (setq cycle-themes-theme-list '(berrys nord))
 
   :bind ((:map cycle-themes-mode-map
@@ -195,9 +195,9 @@
   (helm-mode t)
   (helm-adaptive-mode t)
 
-  (setq-default helm-mode-fuzzy-match t)
-  (setq-default helm-completion-in-region-fuzzy-match t)
-
+  (setq helm-completion-style 'emacs)
+  (setq completion-styles `(basic partial-completion emacs22 initials
+                                  ,(if (version<= emacs-version "27.0") 'helm-flex 'flex)))
   (setq helm-split-window-default-side 'same)
 
   (add-to-list 'helm-completing-read-handlers-alist '(org-capture))
