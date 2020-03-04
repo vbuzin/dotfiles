@@ -108,12 +108,12 @@
     :ensure nil
     :init
     (add-to-list 'custom-theme-load-path "~/Projects/berrys-theme")
-    (load-theme 'berrys t t))
+    (load-theme 'berrys t))
 
   (use-package nord-theme
     :init
-    (setq nord-region-thighlight 'snowstorm)
-    (load-theme 'nord t))
+    (setq nord-region-highlight 'snowstorm)
+    (load-theme 'nord t t))
   (setq cycle-themes-theme-list '(berrys nord))
 
   :bind ((:map cycle-themes-mode-map
@@ -195,6 +195,9 @@
   (helm-mode t)
   (helm-adaptive-mode t)
 
+  (setq helm-completion-style 'emacs)
+  (setq completion-styles `(basic partial-completion emacs22 initials
+                                  ,(if (version<= emacs-version "27.0") 'helm-flex 'flex)))
   (setq helm-split-window-default-side 'same)
 
   (add-to-list 'helm-completing-read-handlers-alist '(org-capture))
@@ -218,23 +221,16 @@
   (use-package helm-descbinds
     :bind ("C-h b" . helm-descbinds))
 
-  (use-package helm-fuzzier
-    :hook (helm-mode . helm-fuzzier-mode)
-    :config
-    (setq-default helm-M-x-fuzzy-match t)
-    (setq-default helm-buffers-fuzzy-match t)
-    (setq-default helm-ff-fuzzy-matching t)
-    (setq-default helm-mode-fuzzy-match t)
-    (setq-default helm-recentf-fuzzy-match t))
-
   (use-package helm-org-rifle
     :after org
-    :bind (:map org-mode-map
-                ("C-c or" . helm-org-rifle)))
+    :bind (("C-c or" . helm-org-rifle-agenda-files)
+           :map org-mode-map
+           ("C-c oo" . helm-org-rifle-current-buffer))
+    :config
+    (setq helm-org-rifle-show-path t))
 
   (use-package helm-projectile
-    :after projectile
-    :config
+    :init
     (setq projectile-completion-system 'helm)
     (helm-projectile-on))
 
@@ -417,7 +413,7 @@
 (use-package pinentry
   :defer 1
   :config
-  (setq epa-pinentry-mode 'ask)
+  (setq epa-pinentry-mode 'loopback)
   (pinentry-start))
 
 (use-package projectile

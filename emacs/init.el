@@ -62,9 +62,9 @@
 (setenv "PATH"
         (concat
          (getenv "PATH")
-         ":~/bin"
-         ":~/.local/bin"
-         ":~/.cargo/bin"
+         (concat ":" (expand-file-name "~/bin"))
+         (concat ":" (expand-file-name "~/.local/bin"))
+         (concat ":" (expand-file-name "~/.cargo/bin"))
          ":/usr/local/bin"
          ":/usr/local/sbin"))
 
@@ -81,7 +81,7 @@
 
 ;; ignoring if font is not available
 (ignore-errors
-  (set-face-attribute 'default nil :font "SF Mono-14"))
+  (set-face-attribute 'default nil :font "Monaco-14"))
 
 ;;; Place all auto-saves and backups in the temp directory
 ;; =============================================================================
