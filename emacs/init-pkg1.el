@@ -88,6 +88,7 @@
 
 ;; Javascript
 (use-package js2-mode
+  :disabled
   :diminish
   :mode ("\\.js\\'" "\\.jsx\\'")
   :interpreter "node"
@@ -133,6 +134,21 @@
          ("\\.eslintrc\\'" . json-mode))
   :config (setq-default js-indent-level 2))
 
+(use-package lsp-mode
+  :commands lsp lsp-deferred
+  :hook (lsp-mode . lsp-enable-which-key-integration)
+  :init
+  (setq lsp-keymap-prefix "C-;")
+  :config
+  (setq lsp-prefer-flymake nil) ;; prefer flycheck.
+  (lsp-enable-imenu)
+
+  (use-package company-lsp
+    :if (package-installed-p 'company)
+    :config
+    (setq company-lsp-async t)
+    (add-to-list 'company-backends 'company-lsp)))
+
 (use-package markdown-mode
   :mode (("README\\.md\\'" . gfm-mode)
          ("\\.md\\'"       . markdown-mode)
@@ -144,28 +160,13 @@
   :commands package-lint-current-buffer)
 
 ;; Rust
-(use-package rust-mode
-  :disabled
-  :init
-  (eval-after-load "rust-mode"
-    '(setq rust-mode-map (make-sparse-keymap)))
-  :bind (:map rust-mode-map
-              ("C-c rf" . #'rust-format-buffer))
-  :hook
-  (rust-mode . yas-minor-mode)
+(use-package rustic
+  :after lsp-mode
+  :hook (rustic-mode . yas-minor-mode)
+  :mode ("\\.rs\\'" . rustic-mode)
   :config
-
-  (use-package flycheck-rust
-    :after rust-mode
-    :hook
-    (flycheck-mode . flycheck-rust-setup))
-
-  (use-package racer
-    :diminish
-    :hook
-    ((rust-mode  . racer-mode)
-     (racer-mode . company-mode)
-     (racer-mode . eldoc-mode))))
+  (setq rustic-lsp-server 'rust-analyzer)
+  (setq rustic-format-on-save t))
 
 ;; Web
 (use-package scss-mode

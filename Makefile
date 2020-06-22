@@ -142,11 +142,10 @@ $(MAIL_TARGET_DIR2):
 _rust: _brew
 	@echo $(call message,"Installing/configuring rust and utils")
 	@brew install rustup-init
+	@brew install rust-analyzer
 	@rustup-init -y --no-modify-path --default-toolchain stable
 	@rustup toolchain add nightly
-	@cargo +nightly install racer
-	@rustup component add rust-src # required for racer
-	@rustup component add rustfmt
+	@rustup component add rust-src
 
 # zsh
 # ==============================================================================

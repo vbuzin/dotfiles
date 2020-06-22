@@ -105,9 +105,7 @@
   (setq-default line-spacing 2)
 
   (use-package berrys-theme
-    :ensure nil
     :init
-    (add-to-list 'custom-theme-load-path "~/Projects/berrys-theme")
     (load-theme 'berrys t))
 
   (use-package nord-theme
