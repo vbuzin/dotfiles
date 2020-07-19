@@ -7,7 +7,10 @@
 
 ;; locations
 (setq org-directory (expand-file-name "~/Documents/Org/"))
-(setq org-agenda-files (list org-directory))
+(setq org-agenda-files (list org-directory
+                        (concat org-directory "blog")
+                        (concat org-directory "books")
+                        (concat org-directory "notes")))
 
 (setq org-default-notes-file (concat org-directory "/inbox.org"))
 (setq org-attach-directory   (concat org-directory "/data/"))
@@ -43,6 +46,9 @@
   (require 'org-attach)
   (setq org-link-abbrev-alist '(("att" . org-attach-expand-link)))
 
+  ;; tracking habits
+  (add-to-list 'org-modules 'org-habit t)
+
   ;; babel
   (org-babel-do-load-languages
    'org-babel-load-languages
@@ -54,7 +60,7 @@
 ;; ===
 (setq org-M-RET-may-split-line nil)
 (setq org-agenda-dim-blocked-tasks t)
-(setq org-agenda-include-diary t)
+(setq org-agenda-include-diary nil) ;; use diary.org
 (setq org-agenda-skip-deadline-if-done t)
 (setq org-agenda-skip-scheduled-if-done t)
 (setq org-agenda-skip-timestamp-if-done t)
